@@ -4,6 +4,9 @@ on:
   release:
     types:
       - published
+  push:
+    branches:
+      - dev_ocr_paddle
 
 jobs:
   package_exe:
