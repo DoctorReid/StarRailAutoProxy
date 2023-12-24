@@ -15,6 +15,14 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Checkout wiki
+        uses: actions/checkout@v4
+        with:
+          repository: DoctorReid/StarRailAutoProxy.wiki
+          ref: master
+          fetch-depth: 1
+          path: wiki
+
       - name: Get latest update time
         run: |
           $config_time = git log -1 --format="%ad" --date=format:'%Y-%m-%d %H:%M:%S' -- config
@@ -47,7 +55,25 @@ jobs:
           pip install -r requirements.txt
 
       - name: Package Exe by PyInstaller
-        run: pyinstaller src/gui/app.py --name StarRailAutoProxy --clean --noconfirm --noconsole --icon "images/ui/icon.ico" --add-data "images:images" --add-data "data:data" --add-data "config:config" --add-data "model:model" --add-data "version.yml:." --add-data "update_by_temp.bat:." --collect-all cnocr
+        run: >
+          pyinstaller src/gui/app.py --name StarRailAutoProxy
+            --clean --noconfirm --noconsole
+            --icon "images/ui/icon.ico" 
+            --add-data "wiki/output/README.pdf:."
+            --add-data "images:images" 
+            --add-data "data:data" 
+            --add-data "config:config" 
+            --add-data "model:model" 
+            --add-data "version.yml:." 
+            --add-data "update_by_temp.bat:." 
+            --collect-all paddle 
+            --collect-all paddleocr 
+            --collect-all shapely 
+            --collect-all pyclipper 
+            --collect-all skimage 
+            --collect-all imghdr 
+            --collect-all imgaug 
+            --collect-all lmdb
 
       - name: Zip All
         run: |
